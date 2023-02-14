@@ -11,14 +11,19 @@ function NewPost({ addNewPost }) {
       };
 
     return (
-        <div>
+        <div className='feed-item'>
             <form onSubmit={handleSubmit}>
                 <textarea
                     placeholder="Start a post"
                     onChange={event => setNewPostText(event.target.value)}
-                    value={newPostText}>
+                    value={newPostText}
+                    className="min-w-full min-h-fit rounded-sm mb-2">
                 </textarea>
-                <button type="submit">Submit</button>
+                <button 
+                    type="submit"
+                    className="bg-blue-500 text-white font-semibold block float-right rounded-3xl px-5 py-1">
+                    Post
+                </button>
             </form>
         </div>
     );

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .feed-item {
+        @apply bg-white p-4 shadow-md gap-4 rounded-md w-96 border-solid border-2;
+    }
+}

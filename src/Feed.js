@@ -1,13 +1,13 @@
 function Feed({ posts }) {
     const feedPosts = posts.map(post =>
-        <div key={post.id}>
-            <div>{post.user}</div>
-            <p>{post.text}</p>
+        <div key={post.id} className='feed-item'>
+            <div className="font-semibold text-gray-500">{post.user}</div>
+            <p className="mt-3">{post.text}</p>
         </div>
     );
 
     return (
-        <div>
+        <div className="flex flex-col gap-3">
             {feedPosts}
         </div>
     );

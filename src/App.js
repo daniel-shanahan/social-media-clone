@@ -24,7 +24,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className='bg-gray-50 h-full flex flex-col items-center gap-4 py-3'>
       <NewPost addNewPost={addNewPost} />
       <Feed posts={posts} />
     </div>
