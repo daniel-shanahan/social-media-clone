@@ -8,7 +8,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [postId, setPostId] = useState(0);
 
-  const addNewPost = (newPostText) => {
+  const addNewPost = newPostText => {
     setPosts(
       [
         { 
@@ -24,8 +24,9 @@ function App() {
   };
 
   return (
-    <div className='bg-gray-50 h-full flex flex-col items-center gap-4 py-3'>
+    <div className='bg-gray-50 h-full flex flex-col items-center gap-7 py-3'>
       <NewPost addNewPost={addNewPost} />
+      <hr className='h-0 w-96 border-b-2 border-b-gray-300'></hr>
       <Feed posts={posts} />
     </div>
   );

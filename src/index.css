@@ -4,6 +4,10 @@
 
 @layer components {
     .feed-item {
-        @apply bg-white p-4 shadow-md gap-4 rounded-md w-96 border-solid border-2;
+        @apply bg-white p-4 shadow-md rounded-md w-96 border-solid border-2;
+    }
+
+    .text-input {
+        @apply min-w-full min-h-fit rounded-xl py-1 px-2 mb-2 border-2 border-gray-200;
     }
 }

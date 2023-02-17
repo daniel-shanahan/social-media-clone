@@ -10,6 +10,26 @@ function NewPost({ addNewPost }) {
         setNewPostText('');
       };
 
+    const submitButton = (() => {
+        if (newPostText === '') {
+            return (
+                <button 
+                    type="submit"
+                    className="text-gray-400 bg-gray-200 font-semibold block float-right rounded-3xl px-5 py-1"
+                    disabled>
+                    Post
+                </button>
+            );
+        }
+        return (
+            <button 
+                type="submit"
+                className="bg-blue-500 text-white font-semibold block float-right rounded-3xl px-5 py-1">
+                Post
+            </button>
+        );
+    })();
+
     return (
         <div className='feed-item'>
             <form onSubmit={handleSubmit}>
@@ -17,13 +37,9 @@ function NewPost({ addNewPost }) {
                     placeholder="Start a post"
                     onChange={event => setNewPostText(event.target.value)}
                     value={newPostText}
-                    className="min-w-full min-h-fit rounded-sm mb-2">
+                    className="text-input">
                 </textarea>
-                <button 
-                    type="submit"
-                    className="bg-blue-500 text-white font-semibold block float-right rounded-3xl px-5 py-1">
-                    Post
-                </button>
+                {submitButton}
             </form>
         </div>
     );
