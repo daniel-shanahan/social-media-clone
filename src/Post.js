@@ -1,66 +1,71 @@
-import { useState } from "react";
-import NewComment from "./NewComment";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+/*import NewComment from "./NewComment";
+import Comment from "./Comment";*/
+import ButtonBar from "./ButtonBar";
 
-function Post({ post }) {
-    const [comments, setComments] = useState([]);
-    const [commentId, setCommentId] = useState(0);
-    const [hasNewComment, setHasNewComment] = useState(false);
+function Post({ props }) {
+    const { post, auth, postsRef, displayName, photoURL } = props;
+    const { text, uid, id, likes } = post;
 
-    const addNewComment = commentText => {
-        setComments(
-            [
-                ...comments,
-                {
-                    id: commentId,
-                    user: 'default user',
-                    text: commentText
-                }
-            ]
-        );
+    const isUserPost = uid === auth.currentUser.uid;
 
-        setCommentId(cid => cid + 1);
-        setHasNewComment(false);
+    const showLikes = (() => {
+        if (likes.length > 0) {
+            return (
+                <div>
+                    <FontAwesomeIcon icon="thumbs-up" color="blue"/>
+                    <p className="inline pl-2">{likes.length}</p>
+                </div>
+            );
+        }
+    })();
+
+    const handleClickLike = async(event) => {
+        const currentUserID = auth.currentUser.uid;
+
+        const updatedLikes = likes.includes(currentUserID) 
+                                ? likes.filter(uid => uid !== currentUserID)
+                                : [...likes, currentUserID];
+        
+        await postsRef.doc(id).set({
+            likes: updatedLikes
+        }, { merge: true });
     };
 
-    const handleClick = () => {
-        if (!hasNewComment) {
-            setHasNewComment(true);
-        }
-    }
+    const handleClickComment = async(event) => {
 
-    const newComment = (() => {
+    };
+
+    /*const newComment = (() => {
         if (hasNewComment === true) {
-            return (
-                <NewComment addNewComment={addNewComment}/>
-            );
+            return <NewComment addNewComment={addNewComment}/>;
         }
     })();
 
     const postComments = comments.map(comment => {
         return (
-            <div key={comment.id} className='bg-gray-200 p-2 rounded-sm'>
-                <div className="font-semibold text-gray-600">{comment.user}</div>
-                <p>{comment.text}</p>
-            </div>
+            <Comment key={comment.id} comment={comment} deleteComment={deleteComment} />
         );
-    });
+    }); */
 
     return (
-        <div key={post.id} className='feed-item'>
-            <div className="font-semibold text-gray-600">{post.user}</div>
-            <p className="mt-3 mb-3">{post.text}</p>
+        <div className='feed-item'>
+            <img src={photoURL} alt='Profile' className='h-10 w-10 mr-3 rounded-full inline' referrerPolicy="no-referrer"></img>
+            <p className="font-semibold text-gray-600 inline">{displayName}</p>
+            <p className="mt-3 mb-3">{text}</p>
+            {showLikes}
             <hr className='h-0 my-1 border-b-2 border-b-gray-100'></hr>
-            <div className="block">
-                <button 
-                    className="py-3 px-10 font-semibold rounded-sm text-gray-500 hover:bg-gray-200"
-                    onClick={handleClick}>
-                    Comment
-                </button>
-            </div>
-            {newComment}
-            <div className="flex flex-col gap-4 ">
+            <ButtonBar handleClickComment={handleClickComment} handleClickLike={handleClickLike} />
+            {/* {newComment}
+            <div className="flex flex-col gap-4 mt-1">
                 {postComments}
-            </div>
+            </div> */}
+            {isUserPost && 
+                <button
+                    className="mt-2 float-right"
+                    onClick={e => postsRef.doc(id).delete()}>
+                    <FontAwesomeIcon icon="trash" color="darkred" />
+                </button>}
         </div>
     );
 }

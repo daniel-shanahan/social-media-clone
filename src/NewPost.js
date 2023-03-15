@@ -1,12 +1,24 @@
 import { useState } from "react";
 
-function NewPost({ addNewPost }) {
+import firebase from 'firebase/compat/app';
+
+function NewPost({ props }) {
+    const { auth, postsRef } = props;
     const [newPostText, setNewPostText] = useState('');
 
-    const handleSubmit = event => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
 
-        addNewPost(newPostText);
+        const newPostRef = postsRef.doc();
+
+        await newPostRef.set({
+            text: newPostText,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uid: auth.currentUser.uid,
+            id: newPostRef.id,
+            likes: []
+        });
+
         setNewPostText('');
       };
 

@@ -1,34 +1,50 @@
-import { useState } from 'react';
-import NewPost from './NewPost';
-import Feed from './Feed';
+/* FontAwesome */
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faTrash, faComment, faThumbsUp, faShareNodes } from "@fortawesome/free-solid-svg-icons";
 
-const USERNAME = 'Daniel Shanahan';
+/* Firebase */
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import {useAuthState} from 'react-firebase-hooks/auth';
+
+import SocialMedia from './SocialMedia';
+import SignIn from "./SignIn";
+
+
+// FontAwesome
+library.add(faTrash, faComment, faThumbsUp, faShareNodes);
+
+// Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyBvMOmAbtS7BoIJOfoKoWR692xL8GVWKSU",
+  authDomain: "social-media-clone-322b4.firebaseapp.com",
+  projectId: "social-media-clone-322b4",
+  storageBucket: "social-media-clone-322b4.appspot.com",
+  messagingSenderId: "285331149861",
+  appId: "1:285331149861:web:d9fd737d0e62dc16fedbcc",
+  measurementId: "G-XR57LM88NP"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
 
 function App() {
-  const [posts, setPosts] = useState([]);
-  const [postId, setPostId] = useState(0);
+  const [user] = useAuthState(auth);
+  const socialMediaProps = {
+    auth: auth,
+    db: db
+  };
 
-  const addNewPost = newPostText => {
-    setPosts(
-      [
-        { 
-          id: postId,
-          user: USERNAME,
-          text: newPostText 
-        },
-        ...posts
-      ]
-    );
-
-    setPostId(pid => pid + 1);
+  const signInProps = {
+    firebase: firebase,
+    auth: auth,
+    db: db
   };
 
   return (
-    <div className='bg-gray-50 h-full flex flex-col items-center gap-7 py-3'>
-      <NewPost addNewPost={addNewPost} />
-      <hr className='h-0 w-96 border-b-2 border-b-gray-300'></hr>
-      <Feed posts={posts} />
-    </div>
+    user ? <SocialMedia props={socialMediaProps} /> : <SignIn props={signInProps} />
   );
 }
 
