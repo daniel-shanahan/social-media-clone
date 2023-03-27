@@ -8,7 +8,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
 
-import SocialMedia from './SocialMedia';
+import Feed from './Feed';
 import SignIn from "./SignIn";
 
 
@@ -32,7 +32,7 @@ const db = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
-  const socialMediaProps = {
+  const feedProps = {
     auth: auth,
     db: db
   };
@@ -44,7 +44,7 @@ function App() {
   };
 
   return (
-    user ? <SocialMedia props={socialMediaProps} /> : <SignIn props={signInProps} />
+    user ? <Feed props={feedProps} /> : <SignIn props={signInProps} />
   );
 }
 

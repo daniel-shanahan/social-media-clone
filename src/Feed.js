@@ -5,7 +5,7 @@ import TopBar from './TopBar';
 import NewPost from './NewPost';
 import Post from './Post';
 
-function SocialMedia({ props }) {
+function Feed({ props }) {
   const { auth, db } = props;
 
   const postsRef = db.collection('posts');
@@ -14,6 +14,14 @@ function SocialMedia({ props }) {
   const [posts] = useCollectionData(query, {idField: 'id'});
   const [users] = useCollectionData(db.collection('users'), {idField: 'id'});
 
+  const getDetailsFromUID = (uid) => {
+    const [postedBy] = users.filter(user => user.uid === uid);
+
+    return {
+      displayName: postedBy.displayName,
+      photoURL: postedBy.photoURL
+    };
+  };
 
   const newPostProps = {
     auth: auth,
@@ -21,17 +29,12 @@ function SocialMedia({ props }) {
   }
 
   const getPostProps = post => {
-    const [postedBy] = users.filter(user => user.uid === post.uid);
-
-    const postProps = { 
+    return  { 
       post: post, 
       auth: auth, 
       postsRef: postsRef,
-      displayName: postedBy.displayName,
-      photoURL: postedBy.photoURL
+      getDetailsFromUID
     };
-
-    return postProps;
   };
 
   return (
@@ -46,4 +49,4 @@ function SocialMedia({ props }) {
   );
 }
 
-export default SocialMedia;
+export default Feed;
