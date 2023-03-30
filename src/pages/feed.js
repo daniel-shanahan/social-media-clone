@@ -1,9 +1,8 @@
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 /* Components */
-import TopBar from './TopBar';
-import NewPost from './NewPost';
-import Post from './Post';
+import NewPost from '../NewPost';
+import Post from '../Post';
 
 function Feed({ props }) {
   const { auth, db } = props;
@@ -38,8 +37,7 @@ function Feed({ props }) {
   };
 
   return (
-    <div className='bg-gray-50 h-full flex flex-col items-center gap-7'>
-      <TopBar auth={auth} />
+    <div className='bg-gray-50 flex flex-col items-center gap-7'>
       <NewPost props={newPostProps} />
       <div className="flex flex-col gap-6">
         {posts && <hr className='h-0 w-96 border-b-2 border-b-gray-300'></hr>}

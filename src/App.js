@@ -1,6 +1,6 @@
 /* FontAwesome */
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrash, faComment, faThumbsUp, faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faComment, faThumbsUp, faShareNodes, faHouse, faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 /* Firebase */
 import firebase from 'firebase/compat/app';
@@ -8,12 +8,17 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
 
-import Feed from './Feed';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+/* Components */
+import TopBar from './TopBar';
 import SignIn from "./SignIn";
+import Feed from './pages/feed';
+import Profile from "./pages/profile";
 
 
 // FontAwesome
-library.add(faTrash, faComment, faThumbsUp, faShareNodes);
+library.add(faTrash, faComment, faThumbsUp, faShareNodes, faHouse, faUser, faRightFromBracket);
 
 // Firebase
 firebase.initializeApp({
@@ -44,7 +49,18 @@ function App() {
   };
 
   return (
-    user ? <Feed props={feedProps} /> : <SignIn props={signInProps} />
+    user 
+      ? (
+        <BrowserRouter>
+          <TopBar auth={auth}/>
+          <Routes>
+            <Route exact path='/' element={<Feed props={feedProps} />} />
+            <Route path='/feed' element={<Feed props={feedProps} />} />
+            <Route path='/profile' element={<Profile />} />
+          </Routes>
+        </BrowserRouter>
+        ) 
+      : <SignIn props={signInProps} />
   );
 }
 
