@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer components {
-    .feed-item {
-        @apply bg-white p-4 shadow-md rounded-md w-96 border-solid border-2;
+    .content-item {
+        @apply bg-white px-4 pt-5 pb-3 border-solid border-2 shadow-md sm:w-[512px] sm:rounded-md sm:max-w-lg sm:mx-auto;
     }
 
     .text-input {
-        @apply min-w-full min-h-fit rounded-xl py-1 px-2 mb-2 border-2 border-gray-200;
+        @apply min-w-full min-h-fit rounded-xl py-1 px-2 mb-2 border-2 border-gray-200
     }
 }

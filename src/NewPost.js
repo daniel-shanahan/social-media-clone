@@ -43,7 +43,7 @@ function NewPost({ props }) {
     })();
 
     return (
-        <div className='feed-item'>
+        <div className='content-item'>
             <form onSubmit={handleSubmit}>
                 <textarea
                     placeholder="Start a post"

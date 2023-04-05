@@ -64,7 +64,7 @@ function Post({ props }) {
     };
 
     return (
-        <div className='feed-item'>
+        <div className='content-item'>
             <img src={photoURL} alt='Profile' className='h-10 w-10 mr-3 rounded-full inline' referrerPolicy="no-referrer"></img>
             <p className="font-semibold text-gray-600 inline">{displayName}</p>
             <p className="mt-3 mb-3">{text}</p>

@@ -37,12 +37,10 @@ function Feed({ props }) {
   };
 
   return (
-    <div className='bg-gray-50 flex flex-col items-center gap-7'>
+    <div className='bg-gray-50 flex flex-col gap-3 pt-3 sm:pt-5 sm:gap-5'>
       <NewPost props={newPostProps} />
-      <div className="flex flex-col gap-6">
-        {posts && <hr className='h-0 w-96 border-b-2 border-b-gray-300'></hr>}
-        {posts && posts.map(post => <Post key={post.id} props={getPostProps(post)} /> )}
-      </div>
+      {posts && <hr className='h-0 border-b-2 border-b-gray-300 sm:w-[512px] sm:mx-auto'></hr>}
+      {posts && posts.map(post => <Post key={post.id} props={getPostProps(post)} /> )}
     </div>
   );
 }
