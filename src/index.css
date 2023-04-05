@@ -3,8 +3,16 @@
 @tailwind utilities;
 
 @layer components {
+    .content {
+        @apply bg-gray-50 flex flex-col gap-2 sm:pt-5 sm:gap-5
+    }
+
     .content-item {
-        @apply bg-white px-4 pt-5 pb-3 border-solid border-2 shadow-md sm:w-[512px] sm:rounded-md sm:max-w-lg sm:mx-auto;
+        @apply bg-white p-4 border-solid border-2 shadow-md sm:w-[512px] sm:rounded-md sm:max-w-lg sm:mx-auto;
+    }
+
+    .button-bar-button {
+        @apply flex-1 py-3 font-semibold rounded-sm text-gray-500 hover:bg-gray-200
     }
 
     .text-input {

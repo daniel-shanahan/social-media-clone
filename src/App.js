@@ -7,6 +7,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
+import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -37,9 +38,28 @@ const db = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
+  const [users] = useCollectionData(db.collection('users'), {idField: 'id'});
+  
+  const getDetailsFromUID = (uid) => {
+    const [postedBy] = users.filter(user => user.uid === uid);
+
+    return {
+      displayName: postedBy.displayName,
+      photoURL: postedBy.photoURL
+    };
+  };
+
   const feedProps = {
     auth: auth,
-    db: db
+    db: db,
+    getDetailsFromUID
+  };
+
+  const profileProps = {
+    auth: auth,
+    db: db,
+    uid: user.uid,
+    getDetailsFromUID
   };
 
   const signInProps = {
@@ -56,7 +76,7 @@ function App() {
           <Routes>
             <Route exact path='/' element={<Feed props={feedProps} />} />
             <Route path='/feed' element={<Feed props={feedProps} />} />
-            <Route path='/profile' element={<Profile />} />
+            <Route path='/profile' element={<Profile props={profileProps}/>} />
           </Routes>
         </BrowserRouter>
         ) 
