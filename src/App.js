@@ -1,6 +1,6 @@
 /* FontAwesome */
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrash, faComment, faThumbsUp, faShareNodes, faHouse, faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 /* Firebase */
 import firebase from 'firebase/compat/app';
@@ -19,7 +19,7 @@ import Profile from "./pages/profile";
 
 
 // FontAwesome
-library.add(faTrash, faComment, faThumbsUp, faShareNodes, faHouse, faUser, faRightFromBracket);
+library.add(faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket);
 
 // Firebase
 firebase.initializeApp({
@@ -40,7 +40,7 @@ function App() {
   const [user] = useAuthState(auth);
   const [users] = useCollectionData(db.collection('users'), {idField: 'id'});
   
-  const getDetailsFromUID = (uid) => {
+  const getDetailsFromUID = (uid = auth.currentUser.uid) => {
     const [postedBy] = users.filter(user => user.uid === uid);
 
     return {
@@ -58,7 +58,7 @@ function App() {
   const profileProps = {
     auth: auth,
     db: db,
-    uid: user.uid,
+    uid: user ? auth.currentUser.uid : undefined,
     getDetailsFromUID
   };
 

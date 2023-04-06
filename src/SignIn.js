@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 function SignIn({ props }) {
   const {firebase, auth, db} = props;
 
@@ -13,16 +11,13 @@ function SignIn({ props }) {
 
   return (
     <div className='bg-gray-50 h-screen flex items-center justify-center'>
-      <div className="w-[500px] flex flex-col items-center gap-28">
-        <div className='text-blue-500 font-semibold text-3xl text-center'>
-          <FontAwesomeIcon icon='share-nodes' className='px-1' />
-          <h1 className='inline'>Connector</h1>
-        </div>
+      <div className=" w-4/5 sm:w-[500px] flex flex-col items-center gap-24">
+        <h1 className='text-blue-500 font-semibold text-5xl'>Connector</h1>
         <p className="text-gray-900 text-4xl text-center">
-          Connect with <p className='font-semibold inline'>friends</p> and the <p className='font-semibold inline'>world</p> around you.
+          Connect with <b className='font-semibold inline'>friends</b> and the <b className='font-semibold inline'>world</b> around you.
         </p>
         <button 
-          className="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold"
+          className="bg-blue-500 text-white text-lg px-6 py-3 rounded-full font-semibold"
           onClick={signInWithGoogle}>
           Sign in with Google
         </button>
