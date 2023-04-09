@@ -58,7 +58,6 @@ function App() {
   const profileProps = {
     auth: auth,
     db: db,
-    uid: user ? auth.currentUser.uid : undefined,
     getDetailsFromUID
   };
 
