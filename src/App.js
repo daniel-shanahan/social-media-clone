@@ -1,6 +1,6 @@
 /* FontAwesome */
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 /* Firebase */
 import firebase from 'firebase/compat/app';
@@ -9,7 +9,7 @@ import 'firebase/compat/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 /* Components */
 import TopBar from './TopBar';
@@ -19,7 +19,7 @@ import Profile from "./pages/profile";
 
 
 // FontAwesome
-library.add(faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket);
+library.add(faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket, faPlus);
 
 // Firebase
 firebase.initializeApp({
@@ -49,37 +49,19 @@ function App() {
     };
   };
 
-  const feedProps = {
-    auth: auth,
-    db: db,
-    getDetailsFromUID
-  };
-
-  const profileProps = {
-    auth: auth,
-    db: db,
-    getDetailsFromUID
-  };
-
-  const signInProps = {
-    firebase: firebase,
-    auth: auth,
-    db: db
-  };
-
   return (
     user 
       ? (
-        <BrowserRouter>
+        <>
           <TopBar auth={auth}/>
           <Routes>
-            <Route exact path='/' element={<Feed props={feedProps} />} />
-            <Route path='/feed' element={<Feed props={feedProps} />} />
-            <Route path='/profile' element={<Profile props={profileProps}/>} />
+            <Route exact path='/' element={<Feed props={{auth, db, getDetailsFromUID}} />} />
+            <Route path='/feed' element={<Feed props={{auth, db, getDetailsFromUID}} />} />
+            <Route path='/profile/:uid' element={<Profile props={{auth, db, getDetailsFromUID}}/>} />
           </Routes>
-        </BrowserRouter>
+        </>
         ) 
-      : <SignIn props={signInProps} />
+      : <SignIn props={{firebase, auth, db}} />
   );
 }
 

@@ -2,15 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import firebase from 'firebase/compat/app';
 
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
 import NewComment from "./NewComment";
 import Comment from "./Comment";
 import ButtonBar from "./ButtonBar";
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import Entry from './Entry';
 
 function Post({ props }) {
     const { post, auth, postsRef, getDetailsFromUID } = props;
     const { text, uid, id, likes } = post;
-    const { displayName, photoURL } = getDetailsFromUID(uid);
 
     const [showNewComment, setShowNewComment] = useState(false);
 
@@ -28,9 +29,7 @@ function Post({ props }) {
                                 ? likes.filter(uid => uid !== currentUserID)
                                 : [...likes, currentUserID];
         
-        await postRef.set({
-            likes: updatedLikes
-        }, { merge: true });
+        await postRef.set({ likes: updatedLikes }, { merge: true });
     };
 
     const addNewComment = async(commentText) => {
@@ -54,20 +53,9 @@ function Post({ props }) {
         postRef.delete();
     };
 
-    const getCommentProps = comment => {
-        return {
-            comment: comment,
-            auth: auth,
-            commentsRef: commentsRef,
-            getDetailsFromUID
-        };
-    };
-
     return (
         <div className='content-item'>
-            <img src={photoURL} alt='Profile' className='h-10 w-10 mr-3 rounded-full inline' referrerPolicy="no-referrer"></img>
-            <p className="font-semibold text-gray-600 inline">{displayName}</p>
-            <p className="mt-3 mb-3">{text}</p>
+            <Entry props={{uid, getDetailsFromUID, text}} />
             {likes.length > 0 && 
                 <div>
                     <FontAwesomeIcon icon="thumbs-up" color="blue"/>
@@ -77,7 +65,7 @@ function Post({ props }) {
             <ButtonBar handleClickComment={e => setShowNewComment(!showNewComment)} handleClickLike={handleClickLike} />
             {showNewComment && <NewComment addNewComment={addNewComment}/>}
             <div className="flex flex-col gap-4 mt-1">
-                {comments && comments.map(comment => <Comment key={comment.id} props={getCommentProps(comment)} />)}
+                {comments && comments.map(comment => <Comment key={comment.id} props={{comment, auth, commentsRef, getDetailsFromUID}} />)}
             </div>
             {isUserPost && 
                 <button
