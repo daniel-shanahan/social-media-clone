@@ -1,6 +1,6 @@
 /* FontAwesome */
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 /* Firebase */
 import firebase from 'firebase/compat/app';
@@ -19,7 +19,7 @@ import Profile from "./pages/profile";
 
 
 // FontAwesome
-library.add(faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket, faPlus);
+library.add(faTrash, faComment, faThumbsUp, faHouse, faUser, faRightFromBracket, faPlus, faMinus);
 
 // Firebase
 firebase.initializeApp({

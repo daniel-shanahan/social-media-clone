@@ -2,7 +2,20 @@ import { useState } from "react";
 
 import firebase from 'firebase/compat/app';
 
-function NewPost({ props }) {
+function SubmitButton({ newPostText }) {
+    if (newPostText === '') {
+        return null;
+    }
+    return (
+        <button 
+            type="submit"
+            className="bg-blue-500 text-white font-semibold block float-right rounded-3xl px-5 py-1">
+            Post
+        </button>
+    );
+};
+
+export default function NewPost({ props }) {
     const { auth, postsRef } = props;
     const [newPostText, setNewPostText] = useState('');
 
@@ -22,26 +35,6 @@ function NewPost({ props }) {
         setNewPostText('');
       };
 
-    const submitButton = (() => {
-        if (newPostText === '') {
-            return (
-                <button 
-                    type="submit"
-                    className="text-gray-400 bg-gray-200 font-semibold block float-right rounded-3xl px-5 py-1"
-                    disabled>
-                    Post
-                </button>
-            );
-        }
-        return (
-            <button 
-                type="submit"
-                className="bg-blue-500 text-white font-semibold block float-right rounded-3xl px-5 py-1">
-                Post
-            </button>
-        );
-    })();
-
     return (
         <div className='content-item'>
             <form onSubmit={handleSubmit}>
@@ -51,10 +44,8 @@ function NewPost({ props }) {
                     value={newPostText}
                     className="text-input">
                 </textarea>
-                {submitButton}
+                <SubmitButton newPostText={newPostText} />
             </form>
         </div>
     );
 }
-
-export default NewPost;
