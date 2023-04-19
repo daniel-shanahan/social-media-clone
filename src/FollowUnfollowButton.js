@@ -2,7 +2,7 @@ import { useDocumentData} from 'react-firebase-hooks/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function FollowUnfollowButton({ props }) {  
-  const { db, currentUID, profileUID, profileUser, profileUserRef } = props;
+  const { db, currentUID, profileUID, followers, profileUserRef } = props;
 
   const currentUserRef = db.collection('users').doc(currentUID);
   const [currentUser] = useDocumentData(currentUserRef, {initialValue: {following: []}});
@@ -14,7 +14,6 @@ export default function FollowUnfollowButton({ props }) {
   };
 
   const updateFollowers = async() => {
-    const { followers } = profileUser;
     const updatedFollowers = followers.includes(currentUID) 
                               ? followers.filter(u => u !== currentUID)
                               : [...followers, currentUID];

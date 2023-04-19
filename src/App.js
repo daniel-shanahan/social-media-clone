@@ -38,14 +38,14 @@ const db = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
-  const [users] = useCollectionData(db.collection('users'), {idField: 'id'});
+  const [users] = useCollectionData(db.collection('users'), {initialValue: []});
   
-  const getDetailsFromUID = (uid = auth.currentUser.uid) => {
-    const [postedBy] = users.filter(user => user.uid === uid);
+  const getDetailsFromUID = (uid) => {
+    const [user] = users.filter(u => u.uid === uid);
 
     return {
-      displayName: postedBy.displayName,
-      photoURL: postedBy.photoURL
+      displayName: user.displayName,
+      photoURL: user.photoURL
     };
   };
 
