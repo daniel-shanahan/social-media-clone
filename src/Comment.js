@@ -8,13 +8,13 @@ function Comment({ props }) {
   const isUserPost = uid === auth.currentUser.uid;
 
   return (
-    <div className='bg-gray-200 p-2 rounded-sm'>
+    <div className='bg-gray-200 p-4 rounded-md'>
       <Entry props={{uid, getDetailsFromUID, text}} />
       {isUserPost &&
         <button
           className="mt-1 float-right"
           onClick={e => commentsRef.doc(id).delete()}>
-          <FontAwesomeIcon icon="trash" color="darkred" />
+          <FontAwesomeIcon icon="trash" color="crimson" />
         </button>}
     </div>
   );

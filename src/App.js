@@ -40,8 +40,15 @@ function App() {
   const [user] = useAuthState(auth);
   const [users] = useCollectionData(db.collection('users'), {initialValue: []});
   
-  const getDetailsFromUID = (uid) => {
+  const getDetailsFromUID = uid => {
     const [user] = users.filter(u => u.uid === uid);
+
+    if(!user) {
+      return {
+        displayName: 'user not found',
+        photoURL: ''
+      };
+    }
 
     return {
       displayName: user.displayName,

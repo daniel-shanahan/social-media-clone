@@ -6,7 +6,7 @@ export default function UserListItem({ uid, getDetailsFromUID }) {
   return (
     <div>
       <NavLink to={'/profile/' + uid}>
-        <img src={photoURL} alt='Profile' className='h-10 w-10 mr-3 rounded-full inline' referrerPolicy="no-referrer" />
+        <img src={photoURL} alt='Profile' className='h-10 w-10 mr-3 rounded-full inline object-cover' referrerPolicy="no-referrer" />
       </NavLink>
       <NavLink to={'/profile/' + uid}>
         <p className="font-semibold text-gray-600 inline">{displayName}</p>

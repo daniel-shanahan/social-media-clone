@@ -26,17 +26,23 @@ export default function Profile({ props }) {
   const { auth, db, getDetailsFromUID } = props;
   const { uid: profileUID } = useParams();
   const [selectedTab, setSelectedTab] = useState('Posts');
+  const [ prevProfileUID, setPrevProfileUID ] = useState('');
   const { displayName, photoURL } = getDetailsFromUID(profileUID);
 
   const currentUID = auth.currentUser.uid;
   
   const postsRef = db.collection('posts');
-  const postsQuery = postsRef.where('uid', '==', profileUID).orderBy('createdAt').limit(25);
+  const postsQuery = postsRef.where('uid', '==', profileUID).orderBy('createdAt', 'desc').limit(25);
   const [posts] = useCollectionData(postsQuery, {initialValue: []});
 
   const profileUserRef = db.collection('users').doc(profileUID);
   const [profileUser] = useDocumentData(profileUserRef, {initialValue: {following: [], followers: []}});
   const { followers, following } = profileUser;
+
+  if(prevProfileUID !== profileUID) {
+    setPrevProfileUID(profileUID);
+    setSelectedTab('Posts');
+  }  
 
   return (
     <div className="content">
@@ -50,9 +56,14 @@ export default function Profile({ props }) {
         </div>
         <ProfileTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       </div>
-      {selectedTab === 'Posts' && posts && posts.map(post => <Post key={post.id} props={{post, auth, postsRef, getDetailsFromUID}} /> )}
-      {selectedTab === 'Followers' && <UserList uids={followers} getDetailsFromUID={getDetailsFromUID} />}
-      {selectedTab === 'Following' && <UserList uids={following} getDetailsFromUID={getDetailsFromUID} />}
+      {selectedTab === 'Posts' 
+        && (posts.length !== 0 
+          ? posts.map(post => <Post key={post.id} props={{post, auth, postsRef, getDetailsFromUID}} /> ) 
+          : (currentUID === profileUID 
+            ? <div className='content-item'><p className='text-center'>You have not created a post yet!</p></div>
+            : <div className='content-item'><p className='text-center'>{displayName} has not created a post yet.</p></div>))}
+      {selectedTab === 'Followers' && <UserList props={{uids: followers, getDetailsFromUID}} />}
+      {selectedTab === 'Following' && <UserList props={{uids: following, getDetailsFromUID}} />}
     </div>
   );
 }
