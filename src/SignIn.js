@@ -6,7 +6,18 @@ function SignIn({ props }) {
     await auth.signInWithPopup(provider);
 
     const { uid, photoURL, displayName } = auth.currentUser;
-    await db.collection("users").doc(uid).set({ uid, photoURL, displayName });
+    const userRef = db.collection('users').doc(uid);
+    userRef.get().then(async(doc) => {
+      if(doc.exists) {
+        // Update name and photo if there have been changes.
+        await userRef.set({photoURL, displayName}, {merge: true});
+      } else {
+        // Create new user entry.
+        await userRef.set({ uid, photoURL, displayName, followers: [], following: [] });
+      }
+    }).catch(error => {
+      console.log('Error getting user information:', error);
+    });
   };
 
   return (
